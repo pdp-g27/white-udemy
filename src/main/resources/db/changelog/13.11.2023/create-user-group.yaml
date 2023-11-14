@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create-user
-      author: asilbekdev@gmail.com
+      author: zafarmalikov704@gmail.com
       changes:
         - sqlFile:
             relativeToChangelogFile: true
