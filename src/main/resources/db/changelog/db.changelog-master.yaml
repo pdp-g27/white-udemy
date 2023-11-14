@@ -1,2 +1,4 @@
 databaseChangeLog:
-  -
+  - include:
+      file: 11.11.2023-group-creat/create-group.yaml
+      relativeToChangelogFile: true
