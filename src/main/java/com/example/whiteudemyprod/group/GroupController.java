@@ -1,10 +1,14 @@
 package com.example.whiteudemyprod.group;
 
+import com.example.whiteudemyprod.group.dto.GroupCreateDto;
 import com.example.whiteudemyprod.group.dto.GroupResponseDto;
+import com.example.whiteudemyprod.group.dto.GroupUpdateDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/group")
@@ -15,37 +19,36 @@ public class GroupController {
     private final GroupService groupService;
 
 
-   /* @PostMapping("/save")
-    public ResponseEntity<GroupResponseDto> save(@RequestBody GroupRequestDto groupRequestDto) {
-        // try {
-        GroupResponseDto groupResponseDto = groupService.create(groupRequestDto);
+    @PostMapping("/save")
+    public ResponseEntity<GroupResponseDto> save(@RequestBody GroupCreateDto groupCreateDto) {
+        GroupResponseDto groupResponseDto = groupService.create(groupCreateDto);
         return ResponseEntity.ok(groupResponseDto);
-        //  } catch (Exception e) {
-        //    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        //   }
-    }*/
+    }
 
     @GetMapping("/getAll")
-    public List<GroupResponseDto> getAll() {
-        return groupService.getAll();
+    public ResponseEntity<Page<GroupResponseDto>> getAll(Pageable pageable,
+                                                         @RequestParam(required = false) String predicate) {
+        Page<GroupResponseDto> all = groupService.getAll(pageable, predicate);
+        return ResponseEntity.ok(all);
     }
 
     @GetMapping("/findById/{groupId}")
-    public GroupResponseDto findById(@PathVariable UUID groupId) {
-        return groupService.findById(groupId);
+    public ResponseEntity<GroupResponseDto> findById(@PathVariable UUID groupId) {
+        GroupResponseDto responseDto = groupService.findById(groupId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/delete/{groupId}")
-    public GroupResponseDto delete(@PathVariable UUID groupId) {
-        return groupService.deleteById(groupId);
+    public ResponseEntity<?> delete(@PathVariable UUID groupId) {
+        groupService.deleteById(groupId);
+        return ResponseEntity.ok("DELETE SUCCESS");
     }
 
-  /*  @PutMapping("/update/{groupId}")
-    public GroupResponseDto update(@RequestBody GroupRequestDto requestDto,
+    @PutMapping("/update/{groupId}")
+    public GroupResponseDto update(@RequestBody GroupUpdateDto updateDto,
                                    @PathVariable UUID groupId) {
-        return groupService.update(requestDto, groupId);
+        return groupService.update(updateDto, groupId);
     }
-*/
 
 
 }
